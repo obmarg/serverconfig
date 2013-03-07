@@ -6,23 +6,21 @@
   - name: Update apt-cache
     apt: update_cache=yes
   
-  - name: Ensure nginx present
-    apt: pkg=nginx 
-  - name: Ensure mysql (boo) present
-    apt: pkg=mysql-server-5.1
-  - name: Ensure php (boo) present
-    apt: pkg=php5
-  - name: Ensure build-essential present
-    apt: pkg=build-essential
-  - name: Ensure python-dev present
-    apt: pkg=python-dev
-  - name: Ensure libxml2-dev present
-    apt: pkg=libxml2-dev
+  - name: Install packages via apt
+    apt: pkg=$item 
+    with_items:
+        - nginx
+        - mysql-server-5.1
+        - php5
+        - build-essential
+        - python-dev
+        - libxml2-dev
 
-  - name: Ensure virtualenv present
-    pip: name=virtualenv
-  - name: Ensure uwsgi present
-    pip: name=uwsgi
+  - name: Install python packages via pip
+    pip: name=$item
+    with_items:
+        - virtualenv
+        - uwsgi
 
   - name: Disable default nginx virtual host
     file: name=/etc/nginx/sites-enabled/default state=absent
