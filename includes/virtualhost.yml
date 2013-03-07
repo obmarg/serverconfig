@@ -1,0 +1,13 @@
+---
+- name: Checking $vhost log directory exists
+  file: path=/var/log/nginx/$vhost state=directory
+- name: Checking $vhost web directory exists
+  file: path=/var/www/$vhost state=directory
+- name: Configuring $vhost virtual host
+  template: src=templates/virtualhost.conf dest=/etc/nginx/sites-available/$vhost
+  notify:
+    - restart nginx
+- name: Enabling $vhost virtual host
+  file: src=/etc/nginx/sites-available/$vhost path=/etc/nginx/sites-enabled/$vhost state=link
+  notify:
+    - restart nginx

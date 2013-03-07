@@ -23,3 +23,15 @@
     pip: name=virtualenv
   - name: Ensure uwsgi present
     pip: name=uwsgi
+
+  - name: Disable default nginx virtual host
+    file: name=/etc/nginx/sites-enabled/default state=absent
+
+  - include: includes/virtualhost.yml vhost=blog address=blog.grambo.me.uk
+  - include: includes/virtualhost.yml vhost=cpp11 address=cpp11.grambo.me.uk
+  
+  handlers:
+  - name: restart nginx
+    action: service name=nginx state=restarted
+
+
