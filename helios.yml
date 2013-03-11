@@ -42,13 +42,14 @@
   - include: includes/uwsgi-app.yml
     vars:
         name: resumr
-        address: resumr.net
+        address: www.resumr.net
         username: resumr
         repo: git://github.com/obmarg/resumr.git
         uwsgi_address: 127.0.0.1:3031
         main_file: ./resumr.py
         callable: app
         env: RESUMR_CONFIG=/home/resumr/config.py
+        static_dir: /home/resumr/app/static
   
   handlers:
   - name: restart nginx
