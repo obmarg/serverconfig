@@ -1,0 +1,31 @@
+#!/bin/bash
+
+daemon=/usr/local/bin/uwsgi
+pid=/var/run/uwsgi.pid
+args="--ini /etc/uwsgi/uwsgi.ini"
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+    start)
+        echo "Starting uwsgi"
+        start-stop-daemon -p $pid --start --exec $daemon -- $args
+        ;;
+    stop)
+        echo "Stopping script uwsgi"
+        start-stop-daemon --signal INT -p $pid --stop $daemon -- $args
+        ;;
+    reload)
+        echo "Reloading conf"
+        kill -HUP $(cat $pid)
+        ;;
+    status)
+        ps `cat /var/run/uwsgi.pid` > /dev/null 2>&1
+        exit $?
+        ;;
+    *)
+        echo "Usage: $FILE {start|stop|reload}"
+        exit 1
+    ;;
+esac
+
+exit 0

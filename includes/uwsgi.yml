@@ -1,0 +1,9 @@
+---
+- name: Creating uwsgi vassals directory
+  file: path=/etc/uwsgi/vassals.d state=directory
+- name: Installing uwsgi emperor configuration
+  copy: src=files/uwsgi.ini dest=/etc/uwsgi/uwsgi.ini
+- name: Installing uwsgi init script
+  copy: src=files/uwsgi-init dest=/etc/init.d/uwsgi mode=0744
+- name: Setting up uwsgi service
+  service: name=uwsgi enabled=yes state=started

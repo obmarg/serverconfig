@@ -22,6 +22,8 @@
         - virtualenv
         - uwsgi
 
+  - include: includes/uwsgi.yml
+
   - name: Disable default nginx virtual host
     file: name=/etc/nginx/sites-enabled/default state=absent
 
