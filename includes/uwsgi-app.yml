@@ -1,0 +1,20 @@
+---
+- name: Creating $username user
+  user: name=$username group=users
+- name: Cloning $name repository
+  git: repo=$repo dest=/home/$username/app version=master
+  when_set: $repo
+  notify:
+    - restart uwsgi
+- name: Installing dependencies for $name
+  pip: requirements=/home/$username/app/requirements.txt virtualenv=/home/$username/venv
+  when_set: $repo
+  notify:
+    - restart uwsgi
+- name: Setting up uwsgi config
+  template: src=templates/uwsgi-vassal.ini dest=/etc/uwsgi/vassals.d/$name owner=$username group=users
+  notify:
+    - restart uwsgi
+- include: includes/virtualhost.yml
+  vars:
+    vhost: $name
