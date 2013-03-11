@@ -15,6 +15,7 @@
         - build-essential
         - python-dev
         - libxml2-dev
+        - cmake
 
   - name: Install python packages via pip
     pip: name=$item
@@ -37,6 +38,17 @@
         vhost: cpp11 
         address: cpp11.grambo.me.uk
         caching: true
+
+  - include: includes/uwsgi-app.yml
+    vars:
+        name: resumr
+        address: resumr.net
+        username: resumr
+        repo: git://github.com/obmarg/resumr.git
+        uwsgi_address: 127.0.0.1:3031
+        main_file: ./resumr.py
+        callable: app
+        env: RESUMR_CONFIG=/home/resumr/config.py
   
   handlers:
   - name: restart nginx
